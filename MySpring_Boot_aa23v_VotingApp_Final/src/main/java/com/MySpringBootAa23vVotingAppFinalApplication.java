@@ -32,7 +32,7 @@ public class MySpringBootAa23vVotingAppFinalApplication implements CommandLineRu
 		admin.setEmail("admin");
 		admin.setName("admin");
 		admin.setPassword("admin");
-		admin.setPhone(1234);
+		admin.setPhone("1234");
 		admin.setRole("ROLE_ADMIN");
 		admin.setStatus("admin");
 		userRepo.save(admin);

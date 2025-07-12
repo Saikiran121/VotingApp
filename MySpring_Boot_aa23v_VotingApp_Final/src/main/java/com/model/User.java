@@ -31,7 +31,7 @@ public class User {
 	private String email;
 	private String name;
 	private String password;
-	private int phone;
+	private String phone;
 	private String status;
 	private String role;
 	
