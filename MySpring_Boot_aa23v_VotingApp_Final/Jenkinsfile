@@ -1,20 +1,69 @@
 pipeline {
-    agent any
+    agent any 
+
+    environment {
+        APP_NAME = 'VotingApp'
+        APP_VERSION = '0.0.1-SNAPSHOT'
+        JAVA_VERSION = '17'
+        BUILD_ENV = 'development'
+    }
+
+    tools {
+        maven 'Maven-3.8'
+        jdk 'OpenJDK-17'
+    }
 
     stages {
-        stage("Git Checkout") {
+        stage('Git Checkout') {
             steps {
                 git(
-                  url: 'https://github.com/Saikiran121/VotingApp.git',
-                  branch: 'master'
+                    url: 'https://github.com/Saikiran121/VotingApp.git',
+                    branch: 'master'
                 )
+
+                echo "Checked out ${env.APP_NAME} version ${env.APP_VERSION}"
             }
         }
 
-        stage("Greetings") {
+        stage('Install Dependencies') {
             steps {
-                echo "Hello, Jenkinsfile!"
+                echo "Installing Maven dependencies for Java ${env.JAVA_VERSION}..."
+
+                sh 'mvn clean compile -B'
+
+                echo "Dependencies installed successfully in ${env.BUILD_ENV} environment"
             }
+        }
+
+        stage('Run Tests') {
+            steps {
+                echo "Running tests for ${env.APP_NAME}..."
+                sh 'mvn test -B'
+            }
+            post {
+                always {
+                    junit '**/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('Archive artifacts') {
+            steps {
+                echo "Archiving artifacts for ${env.APP_NAME} v${env.APP_VERSION}"
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline completed successfully for ${env.APP_NAME}!"
+        }
+        failure {
+            echo "Pipeline failed for ${env.APP_NAME}. Check logs for details."
+        }
+        always {
+            cleanWs()
         }
     }
 }
