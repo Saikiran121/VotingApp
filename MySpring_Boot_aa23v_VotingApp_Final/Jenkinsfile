@@ -4,8 +4,10 @@ pipeline {
     stages {
         stage("git Checkout") {
             steps {
-                git url: 'https://github.com/Saikiran121/VotingApp.git',
-                branch; 'master'
+                git (
+                    url: 'https://github.com/Saikiran121/VotingApp.git',
+                    branch; 'master'
+                    )
             }
         }
 
