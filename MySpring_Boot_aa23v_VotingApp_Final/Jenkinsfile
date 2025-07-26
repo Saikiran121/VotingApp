@@ -38,6 +38,16 @@ pipeline {
             }
         }
 
+        stage('Build Application') {
+            steps {
+                echo "Building ${env.APP_NAME}..."
+                dir("${env.PROJECT_DIR}") {
+                    sh 'mvn package -DskipTests -B'
+                }
+                echo "Build completed for ${env.APP_NAME}"
+            }
+        }
+
         stage('Run Tests') {
             steps {
                 echo "Running tests for ${env.APP_NAME}..."
