@@ -33,7 +33,6 @@ pipeline {
                 dir("${env.PROJECT_DIR}") {
                     sh 'mvn clean compile -B'
                 }
-                
 
                 echo "Dependencies installed successfully in ${env.BUILD_ENV} environment"
             }
@@ -42,7 +41,10 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo "Running tests for ${env.APP_NAME}..."
-                sh 'mvn test -B'
+                dir("${env.PROJECT_DIR}") {
+                    sh 'mvn test -B'
+                }
+                
             }
             post {
                 always {
