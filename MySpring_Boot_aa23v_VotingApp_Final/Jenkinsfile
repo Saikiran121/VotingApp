@@ -6,6 +6,7 @@ pipeline {
         APP_VERSION = '0.0.1-SNAPSHOT'
         JAVA_VERSION = '17'
         BUILD_ENV = 'development'
+        PROJECT_DIR = 'MySpring_Boot_aa23v_VotingApp_Final'
     }
 
     tools {
@@ -29,7 +30,10 @@ pipeline {
             steps {
                 echo "Installing Maven dependencies for Java ${env.JAVA_VERSION}..."
 
-                sh 'mvn clean compile -B'
+                dir("${env.PROJECT_DIR}") {
+                    sh 'mvn clean compile -B'
+                }
+                
 
                 echo "Dependencies installed successfully in ${env.BUILD_ENV} environment"
             }
